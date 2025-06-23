@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:8.0.2-bookworm
+    container_name: redis
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+    networks:
+      - local-net
+
+  python-hello-globo:
+    build:
+      context: python-hello-globo
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    env_file:
+      - python-hello-globo/.env
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - local-net
+    restart: always
+
+  golang-hello-globo:
+    build:
+      context: golang-hello-globo
+      dockerfile: Dockerfile
+    ports:
+      - "8000:80"
+    env_file:
+      - golang-hello-globo/.env
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - local-net
+    restart: always
+
+volumes:
+  redis_data:
+    driver: local
+
+networks:
+  local-net:
+    driver: bridge
