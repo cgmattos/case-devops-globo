@@ -1,5 +1,6 @@
 import logging
 from src.config.config import Config
+from src.redis.redis import init_redis_pool
 from src.config.app import App
 from src.routes.routes import routes
 from waitress import serve
@@ -8,6 +9,9 @@ def main():
     # Import as configurações
     config = Config()
 
+    # Instancia connection pool do redis
+    init_redis_pool()
+    
     # Instancia as rotas
     routes(App)
 

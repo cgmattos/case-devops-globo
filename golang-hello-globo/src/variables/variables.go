@@ -2,29 +2,52 @@ package variables
 
 import (
 	"os"
+	"strconv"
+	"strings"
 )
 
-var Variables map[string]string
+var EnvVars EnvironmentVariables
 
-func GetVariables() {
-	varMap := make(map[string]string)
+type EnvironmentVariables struct {
+	Port string
+	Debug bool
+	Host string
+	RedisUrl string
+	RedisPassword string
+	RedisDB int
+	CacheKey string
+	CacheTimeout int
+
+}
+
+func InitVariables() {
+	redisUrl := os.Getenv("REDIS_URL")
+	redisPassword := os.Getenv("REDIS_PASSWORD")
+	redisDB, err := strconv.Atoi(os.Getenv("REDIS_DB"))
+	if err != nil {
+		redisDB = 0
+	}
+	cacheKey := os.Getenv("CACHE_KEY")
+	cacheTimeout, err := strconv.Atoi(os.Getenv("CACHE_TIMEOUT"))
+	if err != nil {
+		cacheTimeout = 10
+	}
 	port := os.Getenv("PORT")
-	redisHost := os.Getenv("REDIS_HOST")
 	host := os.Getenv("HOST")
-	debug := os.Getenv("DEBUG")
-
-	if port == "" {
-		port = "8000"
+	debug := false
+	debugStr := strings.ToLower(os.Getenv("DEBUG"))
+	if debugStr == "true"{
+		debug = true
 	}
 
-	if host == "" {
-		host = "0.0.0.0"
+	EnvVars = EnvironmentVariables{
+		RedisUrl: redisUrl,
+		RedisPassword: redisPassword,
+		RedisDB: redisDB,
+		CacheKey: cacheKey,
+		CacheTimeout: cacheTimeout,
+		Port: port,
+		Debug: debug,
+		Host: host,
 	}
-
-	varMap["port"] = port
-	varMap["redisHost"] = redisHost
-	varMap["host"] = host
-	varMap["debug"] = debug
-
-	Variables = varMap
 }
