@@ -1,16 +1,30 @@
-variable "project_id" {}
+variable "project_id" {
+    description = "ID do projeto"
+}
 
-variable "region" {}
+variable "region" {
+    description = "Região do projeto"
+}
 
-variable "zone" {}
+variable "zone" {
+    description = "Zona do projeto"
+}
 
-variable "registry_name" {}
+variable "registry_name" {
+    description = "Nome do registry utilizado pelo Cloud Run"
+}
 
-variable "image_tag" {}
+variable "image_tag" {
+    description = "Tag das imagens utilizadas no Cloud Run"
+}
 
-variable "redis_vpc" {}
+variable "redis_vpc" {
+    description = "Variável com o nome da VPC criada para conexão do Redis com o Cloud Run"
+}
 
-variable "redis_connector" {}
+variable "redis_connector" {
+    description = "Connector criado para permitir acesso do Cloud Run à VPC do Redis através do backend da GCP"
+}
 
 variable "services" {
   description = "Configuração para cada App"

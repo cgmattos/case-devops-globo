@@ -18,16 +18,19 @@ variable "zone" {
 
 variable "path_python_app" {
   type    = string
+  description = "Path local para o diretório da aplicação em Python"
   default = "python-hello-globo"
 }
 
 variable "path_golang_app" {
   type    = string
+  description = "Path local para o diretório da aplicação em Go"
   default = "golang-hello-globo"
 }
 
 variable "registry_name" {
   type    = string
+  description = "Nome do repositório criado para o Cloud Run"
   default = "cg-case-globo"
 }
 
