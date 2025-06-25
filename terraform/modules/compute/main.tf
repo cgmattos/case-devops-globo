@@ -155,3 +155,4 @@ resource "google_cloud_run_service_iam_member" "public_access" {
 
   depends_on = [ google_cloud_run_service.services ]
 }
+
