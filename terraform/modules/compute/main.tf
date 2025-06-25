@@ -29,7 +29,7 @@ resource "google_redis_instance" "redis" {
   authorized_network = var.redis_vpc
   memory_size_gb     = 1
 
-  depends_on = [for svc in google_project_service.apis : svc]
+  depends_on = [google_project_service.apis["redis.googleapis.com"]]
 }
 
 resource "google_artifact_registry_repository" "registry" {
@@ -39,7 +39,10 @@ resource "google_artifact_registry_repository" "registry" {
   format        = "DOCKER"
   description   = "Repositório de imagens Docker ${var.registry_name}"
 
-  depends_on = [for svc in google_project_service.apis : svc]
+  depends_on = [
+    google_project_service.apis["artifactregistry.googleapis.com"],
+    google_project_service.apis["containerregistry.googleapis.com"]
+  ]
 }
 
 resource "null_resource" "build_and_push_images" {
@@ -119,6 +122,7 @@ resource "google_cloud_run_service" "services" {
 
   depends_on = [
     null_resource.build_and_push_images,
+    google_project_service.apis["run.googleapis.com"],
     google_redis_instance.redis,
   ]
 
