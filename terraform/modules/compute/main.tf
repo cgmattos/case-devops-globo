@@ -3,7 +3,7 @@ resource "google_project_service" "apis" {
     "run.googleapis.com",
     "artifactregistry.googleapis.com",
     "containerregistry.googleapis.com",
-    "redis.googleapis.com",
+    # "redis.googleapis.com",
     "iam.googleapis.com",
     "servicemanagement.googleapis.com",
     "serviceusage.googleapis.com",
@@ -11,6 +11,19 @@ resource "google_project_service" "apis" {
 
   project = var.project_id
   service = each.value
+
+  disable_dependent_services = false
+  disable_on_destroy = false
+
+  lifecycle {
+    prevent_destroy = true
+  }
+
+}
+
+resource "google_project_service" "redis_api" {
+  project = var.project_id
+  service = "redis.googleapis.com"
 
   disable_dependent_services = false
   disable_on_destroy = false
@@ -29,7 +42,7 @@ resource "google_redis_instance" "redis" {
   authorized_network = var.redis_vpc
   memory_size_gb     = 1
 
-  depends_on = [google_project_service.apis["redis.googleapis.com"]]
+  depends_on = [google_project_service.redis_api]
 }
 
 resource "google_artifact_registry_repository" "registry" {

@@ -43,6 +43,10 @@ jobs:
         run: terraform apply -target=google_project_service.apis -auto-approve -lock=false
         working-directory: ./terraform
 
+      - name: Enable Redis API
+        run: terraform apply -target=google_project_service.redis_api -auto-approve -lock=false
+        working-directory: ./terraform
+
       - name: Terraform Plan
         run: terraform plan -lock=false
         working-directory: ./terraform
