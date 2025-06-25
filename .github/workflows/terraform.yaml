@@ -32,13 +32,13 @@ jobs:
         run: mkdir -p terraform/files && touch ./terraform/files/access-key.json  && echo $ENCODED_ACCESS_KEY_JSON | base64 -di > ./terraform/files/access-key.json 
 
       - name: Initialize Terraform
-        run: cd terraform/ && terraform init
+        run: terraform init -chdir=terraform
 
       - name: Terraform Format Check
-        run: terraform fmt -check
+        run: terraform fmt -check -chdir=terraform
 
       - name: Terraform Plan
-        run: terraform plan
+        run: terraform plan -chdir=terraform
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve
+        run: terraform apply -auto-approve -chdir=terraform
