@@ -5,7 +5,7 @@ resource "google_project_service" "apis" {
     "containerregistry.googleapis.com",
     "redis.googleapis.com",
     "iam.googleapis.com",
-    "cloudresourcemanager.googleapis.com"
+    "cloudresourcemanager.googleapis.com",
     "servicemanagement.googleapis.com",
     "serviceusage.googleapis.com",
   ])
