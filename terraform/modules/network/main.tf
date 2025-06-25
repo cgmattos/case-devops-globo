@@ -11,9 +11,9 @@ resource "google_compute_subnetwork" "subnet" {
 }
 
 resource "google_vpc_access_connector" "connector" {
-  name   = "${var.vpc_name}-connector"
-  region = var.region
-  network = google_compute_network.vpc.name
+  name          = "${var.vpc_name}-connector"
+  region        = var.region
+  network       = google_compute_network.vpc.name
   max_instances = 6
   min_instances = 2
 
