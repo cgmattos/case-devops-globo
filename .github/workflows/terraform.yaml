@@ -39,6 +39,10 @@ jobs:
         run: terraform fmt -recursive
         working-directory: ./terraform
 
+      - name: Enable API's
+        run: terraform apply -target=google_project_service.apis -auto-approve -lock=false
+        working-directory: ./terraform
+
       - name: Terraform Plan
         run: terraform plan -lock=false
         working-directory: ./terraform
