@@ -35,19 +35,12 @@ resource "google_artifact_registry_repository" "registry" {
   depends_on = [google_project_service.apis]
 }
 
-resource "null_resource" "docker_login" {
-  provisioner "local-exec" {
-    interpreter = ["/bin/bash", "-c"]
-    command     = "docker login -u _json_key --password-stdin https://${var.region}-docker.pkg.dev/${var.registry_name} < files/access-key.json"
-  }
-  depends_on = [google_artifact_registry_repository.registry]
-}
-
 resource "null_resource" "build_and_push_images" {
   for_each = var.services
   provisioner "local-exec" {
     interpreter = ["/bin/bash", "-c"]
     command     = <<EOT
+      docker login -u _json_key --password-stdin https://${var.region}-docker.pkg.dev/${var.registry_name} < files/access-key.json
       docker build \
         -t ${var.region}-docker.pkg.dev/${var.project_id}/${var.registry_name}/${each.key}:${var.image_tag} \
         ${each.value.build_context}
@@ -55,7 +48,7 @@ resource "null_resource" "build_and_push_images" {
     EOT
   }
 
-  depends_on = [null_resource.docker_login]
+  depends_on = [google_artifact_registry_repository.registry]
 }
 
 resource "google_cloud_run_service" "services" {
