@@ -40,7 +40,7 @@ jobs:
         working-directory: ./terraform
 
       - name: Terraform Enable API's
-        run: terraform apply -target=time_sleep.wait_project_init
+        run: terraform apply -target=time_sleep.wait_project_init -auto-approve -lock=false
         working-directory: ./terraform
 
       - name: Terraform Plan
