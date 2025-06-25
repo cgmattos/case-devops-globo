@@ -18,7 +18,7 @@ resource "google_project_service" "apis" {
   lifecycle {
     prevent_destroy = true
   }
-  
+
 }
 
 resource "google_redis_instance" "redis" {
@@ -28,6 +28,8 @@ resource "google_redis_instance" "redis" {
   location_id        = var.zone
   authorized_network = var.redis_vpc
   memory_size_gb     = 1
+
+  depends_on = [google_project_service.apis]
 }
 
 resource "google_artifact_registry_repository" "registry" {
@@ -139,4 +141,6 @@ resource "google_cloud_run_service_iam_member" "public_access" {
   project  = var.project_id
   role     = "roles/run.invoker"
   member   = "allUsers"
+
+  depends_on = [ google_cloud_run_service.services ]
 }
