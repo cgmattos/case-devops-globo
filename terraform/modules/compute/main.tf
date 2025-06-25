@@ -92,7 +92,6 @@ resource "google_cloud_run_service" "services" {
 
   depends_on = [
     null_resource.build_and_push_images,
-    time_sleep.wait_project_init,
     google_redis_instance.redis,
   ]
 
