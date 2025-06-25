@@ -65,7 +65,7 @@ resource "google_cloud_run_service" "services" {
           "autoscaling.knative.dev/minScale"        = tostring(each.value.min_scale)
           "run.googleapis.com/client-name"          = "terraform"
           "run.googleapis.com/vpc-access-connector" = var.redis_connector
-          "run.googleapis.com/vpc-access-egress"    = "ALL_TRAFFIC"
+          "run.googleapis.com/vpc-access-egress"    = "all-traffic"
         },
         lookup(each.value, "annotations", {})
       )
