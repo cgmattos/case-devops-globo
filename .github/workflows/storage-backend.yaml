@@ -27,7 +27,7 @@ jobs:
       - name: Get Acces Key Json file
         env:
           ENCODED_ACCESS_KEY_JSON: ${{ secrets.ENCODED_ACCESS_KEY_JSON }}
-        run: echo $ENCODED_ACCESS_KEY_JSON | base64 -di > ./files/access-key.json 
+        run: echo $ENCODED_ACCESS_KEY_JSON | base64 -di > ./terraform/files/access-key.json 
 
       - name: Initialize Terraform
         run: cd bucket/terraform && terraform init
