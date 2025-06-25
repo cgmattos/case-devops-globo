@@ -39,12 +39,8 @@ jobs:
         run: terraform fmt -recursive
         working-directory: ./terraform
 
-      - name: Enable API's
-        run: terraform apply -target=google_project_service.apis -auto-approve -lock=false
-        working-directory: ./terraform
-
-      - name: Enable Redis API
-        run: terraform apply -target=google_project_service.redis_api -auto-approve -lock=false
+      - name: Terraform Enable API's
+        run: terraform apply -target=time_sleep.wait_project_init
         working-directory: ./terraform
 
       - name: Terraform Plan
