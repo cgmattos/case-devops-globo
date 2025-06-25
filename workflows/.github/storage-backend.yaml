@@ -1,0 +1,42 @@
+name: Create and Update Storage Bucket
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'bucket/**'
+
+jobs:
+  terraform-docker-job:
+    name: Run Terraform and Docker Tasks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.12.2
+
+      - name: Docker version
+        run: docker --version
+
+      - name: Initialize Terraform
+        run: cd bucket/terraform && terraform init
+
+      - name: Get Acces Key Json file
+        env:
+          ENCODED_ACCESS_KEY_JSON: ${{ secrets.ENCODED_ACCESS_KEY_JSON }}
+        run: echo $ENCODED_ACCESS_KEY_JSON | base64 -di > ./files/access-key.json 
+
+      - name: Terraform Format Check
+        run: terraform fmt -check
+
+      - name: Terraform Plan
+        run: terraform plan
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
