@@ -3,6 +3,6 @@ python-hello-globo/bin
 python-hello-globo/lib64
 python-hello-globo/include
 python-hello-globo/pyvenv.cfg
-terraform/
-terraform/tfvars
-terraform/access-key.json
+terraform/terraform.*
+terraform/.terraform
+terraform/files
