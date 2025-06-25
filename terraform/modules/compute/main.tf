@@ -13,6 +13,7 @@ resource "google_project_service" "apis" {
   service = each.value
 
   disable_dependent_services = false
+  disable_on_destroy = false
 
   lifecycle {
     prevent_destroy = true
@@ -28,7 +29,7 @@ resource "google_redis_instance" "redis" {
   authorized_network = var.redis_vpc
   memory_size_gb     = 1
 
-  depends_on = [google_project_service.apis]
+  depends_on = [for svc in google_project_service.apis : svc]
 }
 
 resource "google_artifact_registry_repository" "registry" {
@@ -38,7 +39,7 @@ resource "google_artifact_registry_repository" "registry" {
   format        = "DOCKER"
   description   = "Repositório de imagens Docker ${var.registry_name}"
 
-  depends_on = [google_project_service.apis]
+  depends_on = [for svc in google_project_service.apis : svc]
 }
 
 resource "null_resource" "build_and_push_images" {
@@ -118,7 +119,6 @@ resource "google_cloud_run_service" "services" {
 
   depends_on = [
     null_resource.build_and_push_images,
-    google_project_service.apis,
     google_redis_instance.redis,
   ]
 
