@@ -1,6 +1,5 @@
 variable project_id {
   type        = string
-  default     = ""
   description = "ID do projeto da GCP"
 }
 
@@ -19,13 +18,11 @@ variable zone {
 variable path_python_app {
   type        = string
   default     = "python-hello-globo"
-  description = "description"
 }
 
 variable path_golang_app {
   type        = string
   default     = "golang-hello-globo"
-  description = "description"
 }
 
 variable registry_name {
