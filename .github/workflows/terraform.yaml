@@ -40,7 +40,7 @@ jobs:
         working-directory: ./terraform
 
       - name: Terraform Plan
-        run: terraform plan -lock
+        run: terraform plan -lock=false
         working-directory: ./terraform
 
       - name: Terraform Apply
