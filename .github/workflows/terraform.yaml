@@ -26,7 +26,7 @@ jobs:
       - name: Docker version
         run: docker --version
 
-      - name: Get Acces Key Json file
+      - name: Get Access Key Json file
         env:
           ENCODED_ACCESS_KEY_JSON: ${{ secrets.ENCODED_ACCESS_KEY_JSON }}
         run: mkdir -p terraform/files && touch ./terraform/files/access-key.json  && echo $ENCODED_ACCESS_KEY_JSON | base64 -di > ./terraform/files/access-key.json 

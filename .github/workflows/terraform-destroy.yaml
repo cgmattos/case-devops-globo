@@ -1,0 +1,35 @@
+name: Terraform Destroy
+on:
+  workflow_dispatch:
+
+jobs:
+  terraform-destroy:
+    name: Terraform Destroy
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: terraform  # Change to your module folder
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Instalar Terraform no Runner
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.12.2
+
+      - name: Get Access Key Json file
+        env:
+          ENCODED_ACCESS_KEY_JSON: ${{ secrets.ENCODED_ACCESS_KEY_JSON }}
+        run: |
+          mkdir -p files
+          touch ./files/access-key.json
+          echo $ENCODED_ACCESS_KEY_JSON | base64 -di > ./files/access-key.json 
+
+      - name: Initialize Terraform
+        run: terraform init -lock=false
+
+      - name: Terraform Destroy
+        run: terraform destroy -auto-approve -lock=false
