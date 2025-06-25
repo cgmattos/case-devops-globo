@@ -1,4 +1,8 @@
 resource "null_resource" "enable_service_usage_api" {
+  triggers = {
+    always_run = timestamp()
+  }
+
   provisioner "local-exec" {
     command = <<EOT
       gcloud auth activate-service-account --key-file=files/access-key.json
@@ -19,8 +23,11 @@ resource "null_resource" "enable_service_usage_api" {
 }
 
 resource "time_sleep" "wait_project_init" {
-  create_duration = "60s"
+  triggers = {
+    always_run = timestamp()
+  }
 
+  create_duration = "60s"
   depends_on = [null_resource.enable_service_usage_api]
 }
 
