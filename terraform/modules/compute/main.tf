@@ -14,6 +14,11 @@ resource "google_project_service" "apis" {
   service = each.value
 
   disable_dependent_services = false
+
+  lifecycle {
+    prevent_destroy = true
+  }
+  
 }
 
 resource "google_redis_instance" "redis" {
