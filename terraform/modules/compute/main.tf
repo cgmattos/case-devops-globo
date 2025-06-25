@@ -1,37 +1,3 @@
-resource "null_resource" "enable_service_usage_api" {
-  triggers = {
-    always_run = timestamp()
-  }
-
-  provisioner "local-exec" {
-    command = <<EOT
-      gcloud auth activate-service-account --key-file=files/access-key.json
-      gcloud services enable serviceusage.googleapis.com \
-        run.googleapis.com \
-        artifactregistry.googleapis.com \
-        containerregistry.googleapis.com \
-        redis.googleapis.com \
-        iam.googleapis.com \
-        servicemanagement.googleapis.com \
-        serviceusage.googleapis.com \
-        cloudresourcemanager.googleapis.com \
-        --project ${var.project_id}
-    EOT
-    
-  }
-
-}
-
-resource "time_sleep" "wait_project_init" {
-  triggers = {
-    always_run = timestamp()
-  }
-
-  create_duration = "60s"
-  depends_on = [null_resource.enable_service_usage_api]
-}
-
-
 resource "google_redis_instance" "redis" {
   name               = "case-globo-cache"
   project            = var.project_id
@@ -39,8 +5,6 @@ resource "google_redis_instance" "redis" {
   location_id        = var.zone
   authorized_network = var.redis_vpc
   memory_size_gb     = 1
-
-  depends_on = [ time_sleep.wait_project_init ]
 }
 
 resource "google_artifact_registry_repository" "registry" {
@@ -49,8 +13,6 @@ resource "google_artifact_registry_repository" "registry" {
   project       = var.project_id
   format        = "DOCKER"
   description   = "Repositório de imagens Docker ${var.registry_name}"
-
-  depends_on = [ time_sleep.wait_project_init ]
 }
 
 resource "null_resource" "build_and_push_images" {

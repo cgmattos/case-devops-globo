@@ -40,8 +40,21 @@ jobs:
         working-directory: ./terraform
 
       - name: Terraform Enable API's
-        run: terraform apply -target=time_sleep.wait_project_init -auto-approve -lock=false
+        run: |
+          gcloud auth activate-service-account --key-file=files/access-key.json
+          gcloud services enable serviceusage.googleapis.com \
+            run.googleapis.com \
+            artifactregistry.googleapis.com \
+            containerregistry.googleapis.com \
+            redis.googleapis.com \
+            iam.googleapis.com \
+            servicemanagement.googleapis.com \
+            serviceusage.googleapis.com \
+            cloudresourcemanager.googleapis.com \
+            --project $PROJECT_ID
         working-directory: ./terraform
+        env:
+          PROJECT_ID: ${{ secrets.PROJECT_ID }}
 
       - name: Terraform Plan
         run: terraform plan -lock=false
