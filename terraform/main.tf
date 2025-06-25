@@ -59,6 +59,7 @@ module "compute" {
         HOST                 = "0.0.0.0"
         CACHE_WINDOW_SECONDS = "10"
         CACHE_KEY            = "python_app"
+        MESSAGE = "Olá!"
       }
       allow_public_access = true
     }

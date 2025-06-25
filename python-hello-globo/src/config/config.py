@@ -8,6 +8,7 @@ class Config:
     cache_key = os.getenv("CACHE_KEY", "python_app")
     port = os.getenv('PORT', '8080')
     host = os.getenv('HOST', '0.0.0.0')
+    message = os.getenv("MESSAGE", "OLá, Globo!")
     debug_mode = False
     if os.getenv('DEBUG_MODE', "").lower() == 'true':
         debug_mode = True

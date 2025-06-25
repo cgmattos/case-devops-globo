@@ -6,7 +6,8 @@
 3) Rodar o comando para dar permissão à service account para editar recursos:
     gcloud projects add-iam-policy-binding [PROJECT_ID] \
   --member="serviceAccount:terraform@[PROJECT_ID].iam.gserviceaccount.com" \
-  --role="roles/editor"
+  --role="roles/editor" \
+  --role="roles/run.admin"
 4) Rodar o comando para gerar o arquivo json para autenticação do provider da GCP do terraform
     gcloud iam service-accounts keys create ~/terraform-key.json \
   --iam-account=terraform@[PROJECT_ID].iam.gserviceaccount.com
