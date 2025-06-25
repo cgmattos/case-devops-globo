@@ -55,7 +55,7 @@ module "compute" {
         REDIS_PORT           = module.compute.redis_port
         REDIS_DB             = "0"
         DEBUG_MODE           = "False"
-        PORT                 = "80"
+        # PORT                 = "80"
         HOST                 = "0.0.0.0"
         CACHE_WINDOW_SECONDS = "10"
         CACHE_KEY            = "python_app"
@@ -67,13 +67,13 @@ module "compute" {
       app_name = "golang-app"
       build_context   = "../${var.path_golang_app}"
       dockerfile_path = "Dockerfile"
-      port            = 80
+      port            = "80"
       cpu             = "1000m"
       memory          = "512Mi"
       min_scale       = 1
       max_scale       = 1
       env_vars = {
-        PORT           = "80"
+        # PORT           = "80"
         HOST           = "0.0.0.0"
         DEBUG          = "True"
         REDIS_URL      = "${module.compute.redis_host}:${module.compute.redis_port}"
