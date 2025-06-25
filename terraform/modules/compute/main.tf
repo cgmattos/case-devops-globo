@@ -60,13 +60,17 @@ resource "google_cloud_run_service" "services" {
   project  = var.project_id
 
   template {
-    vpc_access {
-      connector = var.redis_connector
-      egress = "ALL_TRAFFIC"
-    }
-    scaling {
-      max_instance_count = each.value.max_scale
-      min_instance_count = each.value.min_scale
+    metadata {
+      annotations = merge(
+        {
+          "autoscaling.knative.dev/maxScale" = tostring(each.value.max_scale)
+          "autoscaling.knative.dev/minScale" = tostring(each.value.min_scale)
+          "run.googleapis.com/client-name"   = "terraform"
+          "run.googleapis.com/vpc-access-connector" = var.redis_connector
+          "run.googleapis.com/vpc-access-egress"    = "ALL_TRAFFIC"
+        },
+        lookup(each.value, "annotations", {})
+      )
     }
     
     spec {

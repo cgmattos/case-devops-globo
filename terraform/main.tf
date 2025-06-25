@@ -5,6 +5,11 @@ terraform {
       version = "6.41.0"
     }
   }
+  backend "gcs" {
+      bucket  = "cg-case-globo"
+      prefix  = "terraform/state"
+      credentials = "files/access-key.json"
+  }
 }
 
 provider "google" {

@@ -1,5 +1,6 @@
 variable project_id {
   type        = string
+  default     = "cg-case-globo"
   description = "ID do projeto da GCP"
 }
 
