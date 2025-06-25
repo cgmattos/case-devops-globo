@@ -37,6 +37,11 @@ resource "google_artifact_registry_repository" "registry" {
 
 resource "null_resource" "build_and_push_images" {
   for_each = var.services
+
+  triggers = {
+    always_run = timestamp()
+  }
+
   provisioner "local-exec" {
     interpreter = ["/bin/bash", "-c"]
     command     = <<EOT
@@ -61,6 +66,7 @@ resource "google_cloud_run_service" "services" {
     metadata {
       annotations = merge(
         {
+          "terraform.redeploy.timestamp" = timestamp() 
           "autoscaling.knative.dev/maxScale"        = tostring(each.value.max_scale)
           "autoscaling.knative.dev/minScale"        = tostring(each.value.min_scale)
           "run.googleapis.com/client-name"          = "terraform"
