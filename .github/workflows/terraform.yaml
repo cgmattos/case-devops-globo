@@ -26,13 +26,13 @@ jobs:
       - name: Docker version
         run: docker --version
 
-      - name: Initialize Terraform
-        run: cd terraform/ && terraform init
-
       - name: Get Acces Key Json file
         env:
           ENCODED_ACCESS_KEY_JSON: ${{ secrets.ENCODED_ACCESS_KEY_JSON }}
         run: echo $ENCODED_ACCESS_KEY_JSON | base64 -di > ./files/access-key.json 
+
+      - name: Initialize Terraform
+        run: cd terraform/ && terraform init
 
       - name: Terraform Format Check
         run: terraform fmt -check
