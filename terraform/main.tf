@@ -43,6 +43,7 @@ module "compute" {
 
   services = {
     python_app = {
+      app_name = "python-app"
       build_context = "../${var.path_python_app}"
       port          = 80
       cpu           = "1000m"
@@ -63,6 +64,7 @@ module "compute" {
     }
 
     golang_app = {
+      app_name = "golang-app"
       build_context   = "../${var.path_golang_app}"
       dockerfile_path = "Dockerfile"
       port            = 80

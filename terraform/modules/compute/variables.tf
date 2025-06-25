@@ -15,6 +15,7 @@ variable "redis_connector" {}
 variable "services" {
   description = "Configuração para cada App"
   type = map(object({
+    app_name = string
     build_context       = string
     dockerfile_path     = optional(string, "Dockerfile")
     build_args          = optional(map(string), {})

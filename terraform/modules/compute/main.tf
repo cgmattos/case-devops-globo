@@ -53,7 +53,7 @@ resource "null_resource" "build_and_push_images" {
 
 resource "google_cloud_run_service" "services" {
   for_each = var.services
-  name     = each.key
+  name     = each.value.app_name
   location = var.region
   project  = var.project_id
 
